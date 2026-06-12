@@ -1,0 +1,68 @@
+<div class="dashboard-header">
+
+    <div>
+        <h1>Dashboard</h1>
+
+        <p>
+            Visualiza el estado general de los proyectos y clientes.
+        </p>
+    </div>
+
+    <button
+        class="btn-exportar"
+        (click)="exportarCSV()">
+
+        <i class="pi pi-download"></i>
+        Exportar CSV
+
+    </button>
+
+</div>
+
+<div class="dashboard-info">
+
+    <p class="fecha-dashboard">
+        Actualizado: {{ fechaActualizacion }}
+    </p>
+
+</div>
+
+<div class="dashboard">
+
+    <div class="card">
+        <h3>📁 Total proyectos</h3>
+        <h1>{{ totalProyectos() }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>🟢 Activos</h3>
+        <h1>{{ proyectosActivos() }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>✅ Finalizados</h3>
+        <h1>{{ proyectosFinalizados() }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>🔴 Baja</h3>
+        <h1>{{ proyectosBaja() }}</h1>
+    </div>
+
+</div>
+
+<div class="acciones-dashboard">
+
+</div>
+
+<div class="graficos">
+
+    <div class="grafico-container">
+        <canvas id="graficoEstados"></canvas>
+    </div>
+
+    <div class="grafico-container">
+        <canvas id="graficoClientes"></canvas>
+    </div>
+
+</div>
