@@ -11,12 +11,13 @@ import { ProyectoApiClient } from "./proyecto-api-client";
 import { ProyectoDTO } from "./proyecto-dto";
 import { ProgressBarModule } from 'primeng/progressbar';
 import { EstadosTareasEnum } from "../estados-tareas-enum";
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: "app-tareas-listado",
   templateUrl: "./tareas-listado.html",
   styleUrls: ["./tareas-listado.css"],
-  imports: [TableModule, ButtonModule, Template, TooltipModule, GestionTarea, ProgressBarModule]
+  imports: [TableModule, ButtonModule, Template, TooltipModule, GestionTarea, ProgressBarModule,NgClass ]
 })
 
 export class TareasListado implements OnInit {
