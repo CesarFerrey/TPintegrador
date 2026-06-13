@@ -1,0 +1,31 @@
+<p-dialog [header]="header()" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }" [visible]="visible()"
+    (onHide)="cerrarDialog()">
+
+    <form [formGroup]="form">
+        <div id="contenedor-formulario" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+
+            <div>
+                <!-- Input de descripción -->
+                <input pInputText type="text" id="descripcion" placeholder="Descripción" formControlName="descripcion" style="width: 100%;" />
+                
+                <!-- 🔥 NUEVO: Mensaje de error estético si el campo es inválido y fue tocado -->
+                @if (form.get('descripcion')?.invalid && (form.get('descripcion')?.dirty || form.get('descripcion')?.touched)) {
+                    <small style="color: var(--p-red-500); display: block; margin-top: 0.25rem; font-size: 0.85rem;">
+                        La descripción es obligatoria.
+                    </small>
+                }
+            </div>
+
+            @if (tareaSeleccionada()) {
+                <div>
+                    <p-select id="estado" formControlName="estado" [options]="estados()" placeholder="Estado" appendTo="body" style="width: 100%;" />
+                </div>
+            }
+
+        </div>
+    </form>
+
+    <!-- 🔥 MODIFICADO: Agregamos [disabled]="!form.valid" para bloquear el botón si falta la info -->
+    <button pButton label="Guardar" (click)="guardarTarea()" [disabled]="!form.valid" style="width: 100%;"></button>
+
+</p-dialog>
