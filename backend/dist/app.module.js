@@ -17,7 +17,8 @@ let AppModule = class AppModule {
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot({
+        imports: [
+            config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
             typeorm_1.TypeOrmModule.forRoot({
@@ -27,16 +28,17 @@ exports.AppModule = AppModule = __decorate([
                 username: process.env.DB_USERNAME,
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
-                synchronize: false,
+                synchronize: true,
                 autoLoadEntities: true,
                 logging: process.env.DB_LOGGING === 'true',
                 logger: 'advanced-console',
             }),
             auth_module_1.AuthModule,
-            gestion_module_1.GestionModule],
+            gestion_module_1.GestionModule,
+        ],
         controllers: [],
         providers: [],
-        exports: []
+        exports: [],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

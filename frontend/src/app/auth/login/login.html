@@ -1,8 +1,20 @@
 <form [formGroup]="form">
-    <div id="main">
+    <div id="main" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
         <h2 id="header">Sistema de gestión de proyectos</h2>
-        <input pInputText id="nombre" type="text" placeholder="Nombre de usuario" formControlName="nombre" />
-        <p-password id="clave" formControlName="clave" [feedback]="false" autocomplete="off" placeholder="Clave de acceso"/>
-        <p-button label="Iniciar sesión" (click)="iniciarSesion()"/>
+        
+        <input pInputText id="nombre" type="text" placeholder="Correo electrónico" formControlName="nombre" style="width: 100%;" />
+        
+        <p-password id="clave" formControlName="clave" [feedback]="false" autocomplete="off" placeholder="Clave de acceso" style="width: 100%;" />
+        
+        <!-- Corregido el style con llaves para PrimeNG -->
+        <p-button label="Iniciar sesión" (click)="iniciarSesion()" [disabled]="form.invalid" [style]="{ width: '100%' }"/>
+
+        <!-- Enlace estético para ir a la pantalla de registro -->
+        <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+            <span style="color: var(--p-text-muted-color);">¿No tenés cuenta? </span>
+            <a routerLink="/registrar" style="color: var(--p-primary-color); font-weight: 600; text-decoration: none; cursor: pointer;">
+                Registrate aquí
+            </a>
+        </div>
     </div>
 </form>

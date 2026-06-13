@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, InputSignal, model, ModelSignal, Signal, signal, WritableSignal } from "@angular/core";
+import { Component, computed, effect, inject, input, InputSignal, model, ModelSignal, output, OutputRef, Signal, signal, WritableSignal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DialogModule } from "primeng/dialog";
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,6 +30,9 @@ export class GestionTarea {
     private readonly gestionTareaApiClient = inject(GestionTareaApiClient);
 
     readonly idProyecto: InputSignal<number | null> = input<number | null>(null);
+
+    // 🔥 NUEVO: Emitimos un evento al componente padre para que refresque la lista de tareas
+    onGuardadoExitoso = output<void>();
 
     header: Signal<string> = computed(() => {
         if (this.tareaSeleccionada()) {
@@ -86,15 +89,16 @@ export class GestionTarea {
             this.gestionTareaApiClient.actualizarTarea(this.idProyecto(), this.tareaSeleccionada()?.id!, dto).subscribe({
                 next: () => {
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tarea actualizada correctamente.' });
+                    this.onGuardadoExitoso.emit(); // 🔥 NUEVO: Avisamos al padre
                     this.cerrarDialog();
                 },
                 error: (err) => {
                     let detail: string = "";
-                    if (err.error.statusCode >= 400 && err.error.statusCode < 500) {
-                        detail = err.error.message
+                    if (err.error?.statusCode >= 400 && err.error?.statusCode < 500) {
+                        detail = err.error.message;
                     }
                     else {
-                        detail = "Ha ocurrido un error al actualizar la tarea"
+                        detail = "Ha ocurrido un error al actualizar la tarea";
                     }
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: detail });
                 }
@@ -106,20 +110,20 @@ export class GestionTarea {
             this.gestionTareaApiClient.crearTarea(this.idProyecto(), dto).subscribe({
                 next: () => {
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Tarea creada correctamente.' });
+                    this.onGuardadoExitoso.emit(); // 🔥 NUEVO: Avisamos al padre
                     this.cerrarDialog();
                 },
                 error: (err) => {
                     let detail: string = "";
-                    if (err.error.statusCode >= 400 && err.error.statusCode < 500) {
-                        detail = err.error.message
+                    if (err.error?.statusCode >= 400 && err.error?.statusCode < 500) {
+                        detail = err.error.message;
                     }
                     else {
-                        detail = "Ha ocurrido un error al crear la tarea"
+                        detail = "Ha ocurrido un error al crear la tarea";
                     }
                     this.messageService.add({ severity: 'error', summary: 'Error', detail: detail });
                 }
             });
         }
     }
-
 }

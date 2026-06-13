@@ -10,6 +10,7 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
+    app.enableCors();
     app.use((0, helmet_1.default)());
     const globalPrefix = 'api';
     app.setGlobalPrefix(globalPrefix);
@@ -29,5 +30,5 @@ async function bootstrap() {
     }
     await app.listen(process.env.PORT ?? 3000);
 }
-bootstrap();
+bootstrap().catch((err) => console.error(err));
 //# sourceMappingURL=main.js.map

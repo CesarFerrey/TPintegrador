@@ -3,7 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
+<<<<<<< HEAD
     "analytics": "d6413f20-c8b0-4c30-9492-596e9a925874"
+=======
+    "analytics": false
+>>>>>>> origin/rimavi
   },
   "newProjectRoot": "projects",
   "projects": {

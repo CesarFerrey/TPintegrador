@@ -17,6 +17,7 @@ let Usuario = class Usuario {
     nombre;
     clave;
     estado;
+    email;
 };
 exports.Usuario = Usuario;
 __decorate([
@@ -35,7 +36,11 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: estados_usuarios_enum_1.EstadosUsuariosEnum }),
     __metadata("design:type", String)
 ], Usuario.prototype, "estado", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Usuario.prototype, "email", void 0);
 exports.Usuario = Usuario = __decorate([
-    (0, typeorm_1.Entity)({ name: "usuarios" })
+    (0, typeorm_1.Entity)({ name: 'usuarios' })
 ], Usuario);
 //# sourceMappingURL=usuario.entity.js.map

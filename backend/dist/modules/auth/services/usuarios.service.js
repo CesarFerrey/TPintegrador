@@ -23,8 +23,20 @@ let UsuariosService = class UsuariosService {
     constructor(usuariosRespository) {
         this.usuariosRespository = usuariosRespository;
     }
-    async buscarUsuarioActivoPorNombre(nombre) {
-        return await this.usuariosRespository.findOneBy({ estado: estados_usuarios_enum_1.EstadosUsuariosEnum.ACTIVO, nombre });
+    async buscarUsuarioActivoPorNombre(nombreORemail) {
+        return await this.usuariosRespository.findOneBy({
+            estado: estados_usuarios_enum_1.EstadosUsuariosEnum.ACTIVO,
+            email: nombreORemail,
+        });
+    }
+    async crearUsuario(usuarioData) {
+        const nuevoUsuario = this.usuariosRespository.create(usuarioData);
+        return await this.usuariosRespository.save(nuevoUsuario);
+    }
+    async activarUsuario(id) {
+        return await this.usuariosRespository.update(id, {
+            estado: estados_usuarios_enum_1.EstadosUsuariosEnum.ACTIVO,
+        });
     }
 };
 exports.UsuariosService = UsuariosService;

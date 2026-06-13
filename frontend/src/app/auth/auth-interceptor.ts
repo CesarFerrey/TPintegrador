@@ -1,22 +1,21 @@
-import { HttpEvent, HttpHandlerFn, HttpRequest } from "@angular/common/http";
-import { inject } from "@angular/core";
-import { Observable } from "rxjs/internal/Observable";
-import { AuthStore } from "./auth-store";
+import { HttpInterceptorFn } from '@angular/common/http';
 
-export function authInterceptor(
-  req: HttpRequest<unknown>,
-  next: HttpHandlerFn
-): Observable<HttpEvent<unknown>> {
-
-  const authToken = inject(AuthStore).obtenerToken();
-
-  if (!authToken) {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  
+  if (req.url.includes('/login') || req.url.includes('/auth')) {
     return next(req);
   }
 
-  const reqWithToken = req.clone({
-    headers: req.headers.set('Authorization', `Bearer ${authToken}`)
-  });
+  const token = sessionStorage.getItem('accessToken'); 
 
-  return next(reqWithToken);
-}
+  if (token) {
+    const clonedReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(clonedReq);
+  }
+
+  return next(req);
+};

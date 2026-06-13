@@ -1,7 +1,9 @@
-import { Usuario } from "../entitites/usuario.entity";
-import { Repository } from "typeorm";
+import { Usuario } from '../entitites/usuario.entity';
+import { Repository } from 'typeorm';
 export declare class UsuariosService {
     private readonly usuariosRespository;
     constructor(usuariosRespository: Repository<Usuario>);
-    buscarUsuarioActivoPorNombre(nombre: string): Promise<Usuario | null>;
+    buscarUsuarioActivoPorNombre(nombreORemail: string): Promise<Usuario | null>;
+    crearUsuario(usuarioData: Partial<Usuario>): Promise<Usuario>;
+    activarUsuario(id: number): Promise<any>;
 }
