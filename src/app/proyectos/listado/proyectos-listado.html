@@ -20,8 +20,23 @@
                     severity="success"
                     (click)="crearProyecto()">
                 </p-button>
+            
+                <div class="filtros">
 
+                    <input
+                        type="text"
+                        placeholder="Buscar proyecto..."
+                        (input)="filtrarProyectos($event)">
                 
+                    <select (change)="filtrarEstado($event)">
+                        <option value="">Todos</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="FINALIZADO">Finalizado</option>
+                        <option value="BAJA">Baja</option>
+                    </select>
+                
+                </div>
+            
             </div>
 
         </div>
@@ -30,7 +45,7 @@
 
             <p-table
                 id="tabla"
-                [value]="proyectos()"
+                [value]="proyectosFiltrados()"
                 [tableStyle]="{ 'min-width': '50rem'}"
                 [scrollable]="true"
                 scrollHeight="70vh">

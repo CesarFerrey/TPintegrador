@@ -7,18 +7,10 @@
 }
 
 .card {
-    width: 200px;
+    width: 240px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-}
-
-.btn-exportar{
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
 }
 
 .graficos{
@@ -92,27 +84,11 @@
     transition: 0.3s;
 }
 
-.btn-exportar{
-    background: #198754;
-    color: white;
-    font-weight: bold;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-exportar:hover{
-    background: #157347;
-    transform: scale(1.05);
-}
-
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
 }
 
 .dashboard-header h1 {
@@ -146,10 +122,6 @@
     padding: 8px 16px;
     border-radius: 999px;
     font-weight: 600;
-}
-
-.dashboard-header {
-    margin-bottom: 24px;
 }
 
 .dashboard-header h1 {
@@ -188,18 +160,6 @@
     font-weight: 600;
 }
 
-.card {
-    background: white;
-
-    border-radius: 18px;
-
-    padding: 24px;
-
-    box-shadow: 0 8px 24px rgba(0,0,0,.06);
-
-    transition: all .2s ease;
-}
-
 .card:hover {
     transform: translateY(-3px);
 }
@@ -232,6 +192,7 @@
 
 .btn-exportar:hover {
     background: #15803d;
+    transform: scale(1.05);
 }
 
 .grafico-container {
@@ -248,4 +209,92 @@
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.stats-container {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 30px 0;
+}
+
+.dashboard-card.clientes {
+    border-left: 6px solid #8b5cf6;
+}
+
+.card.clientes {
+    border-left: 4px solid #8b5cf6;
+}
+
+.card h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card h3 {
+    white-space: nowrap;
+    margin: 0;
+}
+
+.card h1 {
+    margin-top: 15px;
+    font-size: 42px;
+}
+
+.ultimos-proyectos {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.06);
+
+    max-width: 1200px;
+    margin: 30px auto 0 auto;
+}
+
+.ultimos-proyectos table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ultimos-proyectos th,
+.ultimos-proyectos td{
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.ultimos-proyectos th{
+    font-weight: 600;
+}
+
+.badge{
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge.activo{
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge.baja{
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge.finalizado{
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.ultimos-proyectos tbody tr:hover{
+    background: #f8fafc;
+    transition: .2s;
+}
+
+.ultimos-proyectos table{
+    font-size: 14px;
 }

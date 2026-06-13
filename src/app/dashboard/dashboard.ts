@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   proyectosActivos = signal(0);
   proyectosFinalizados = signal(0);
   proyectosBaja = signal(0);
+  clientesTotales = signal(0);
   fechaActualizacion = new Date().toLocaleString('es-AR');
 
   ngOnInit(): void {
@@ -41,53 +42,63 @@ export class DashboardComponent implements OnInit {
       next: (proyectos: ListProyectoDTO[]) => {
 
         this.proyectos = proyectos;
-
-        console.log('PROYECTOS RECIBIDOS:', proyectos); 
+      
         this.totalProyectos.set(proyectos.length);
-
+      
         this.proyectosActivos.set(
           proyectos.filter(
             p => p.estado?.toUpperCase() === 'ACTIVO'
           ).length
         );
-
+      
         this.proyectosFinalizados.set(
           proyectos.filter(
             p => p.estado?.toUpperCase() === 'FINALIZADO'
           ).length
         );
-
+      
         this.proyectosBaja.set(
           proyectos.filter(
             p => p.estado?.toUpperCase() === 'BAJA'
           ).length
         );
-
+      
+        // CLIENTES TOTALES
+      
+        const clientesUnicos = new Set(
+          proyectos.map(p => p.cliente.nombre)
+        );
+      
+        this.clientesTotales.set(
+          clientesUnicos.size
+        );
+      
+        // GRÁFICOS
+      
         const activos = proyectos.filter(
           p => p.estado === 'ACTIVO'
         ).length;
-        
+      
         const finalizados = proyectos.filter(
           p => p.estado === 'FINALIZADO'
         ).length;
-        
+      
         const baja = proyectos.filter(
           p => p.estado === 'BAJA'
         ).length;
-        
+      
         this.crearGraficoEstados(
           activos,
           finalizados,
           baja
         );
-
+        
         this.crearGraficoClientes();
-
-      }
-
-    });
-
-  }
+        
+        } 
+        
+        }); 
+      } 
 
   exportarCSV(): void {
 
@@ -183,7 +194,7 @@ export class DashboardComponent implements OnInit {
     }
   
     this.graficoEstados = new Chart('graficoEstados', {
-      type: 'pie',
+      type: 'doughnut',
   
       data: {
         labels: ['Activos', 'Finalizados', 'Baja'],
@@ -194,7 +205,9 @@ export class DashboardComponent implements OnInit {
   
       options: {
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+      
+        cutout: '65%'
       }
 
     });

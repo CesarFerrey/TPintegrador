@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ["./proyectos-listado.css"],
   imports: [TableModule, ButtonModule, Template, TooltipModule, GestionProyecto]
 })
+
 export class ProyectosListado implements OnInit {
 
   private readonly messageService: MessageService = inject(MessageService);
@@ -28,6 +29,12 @@ export class ProyectosListado implements OnInit {
   }
 
   proyectos: WritableSignal<ListProyectoDTO[]> = signal([]);
+
+  proyectosFiltrados: WritableSignal<ListProyectoDTO[]> = signal([]);
+
+  estadoSeleccionado: string = '';
+
+  textoBusqueda: string = '';
 
   dialogVisible: WritableSignal<boolean> = signal(false);
 
@@ -49,6 +56,7 @@ export class ProyectosListado implements OnInit {
     this.proyectosListadoApiClient.buscarProyectos().subscribe({
       next: (data) => {
         this.proyectos.set(data);
+        this.proyectosFiltrados.set(data);
       },
       error: (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener los proyectos' });
@@ -68,5 +76,74 @@ export class ProyectosListado implements OnInit {
   gestionarTareas(proyecto: ListProyectoDTO): void {
     window.open(`/proyectos/${proyecto.id}/tareas`, '_blank');
   }
+
+  filtrarProyectos(event: Event): void {
+
+    const texto = (event.target as HTMLInputElement)
+      .value
+      .toLowerCase();
+  
+    const resultado = this.proyectos().filter(proyecto =>
+  
+      proyecto.nombre
+        .toLowerCase()
+        .includes(texto)
+  
+      ||
+  
+      proyecto.cliente?.nombre
+        .toLowerCase()
+        .includes(texto)
+  
+    );
+  
+    this.proyectosFiltrados.set(resultado);
+  
+  }
+
+  filtrarEstado(event: Event): void {
+
+    this.estadoSeleccionado =
+      (event.target as HTMLSelectElement).value;
+  
+    let resultado = this.proyectos();
+  
+    if (this.estadoSeleccionado) {
+  
+      resultado = resultado.filter(
+        proyecto => proyecto.estado === this.estadoSeleccionado
+      );
+  
+    }
+  
+    this.proyectosFiltrados.set(resultado);
+  }
+
+  aplicarFiltros(): void {
+
+    let resultado = this.proyectos();
+  
+    if (this.textoBusqueda) {
+  
+      resultado = resultado.filter(proyecto =>
+        proyecto.nombre
+          .toLowerCase()
+          .includes(this.textoBusqueda)
+      );
+  
+    }
+  
+    if (this.estadoSeleccionado) {
+  
+      resultado = resultado.filter(proyecto =>
+        proyecto.estado === this.estadoSeleccionado
+      );
+  
+    }
+  
+    this.proyectosFiltrados.set(resultado);
+  }
+
+
 
 }

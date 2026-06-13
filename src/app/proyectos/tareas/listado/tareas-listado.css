@@ -160,3 +160,106 @@ app-template {
     padding: 2rem;
     padding-bottom: 5rem;
 }
+
+.kanban-board {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+.kanban-column {
+
+    background: #f8fafc;
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    min-height: 300px;
+
+    border: 1px solid #e2e8f0;
+}
+
+.kanban-column h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 16px;
+
+    text-align: center;
+
+    color: #334155;
+}
+
+.kanban-card {
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+
+    cursor: pointer;
+
+    transition: transform .2s ease;
+}
+
+.kanban-card:hover {
+
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .kanban-board {
+
+        grid-template-columns: 1fr;
+    }
+
+}
+
+.kanban-card strong {
+
+    display: block;
+}
+
+.kanban-column:nth-child(1) {
+    border-top: 4px solid #f59e0b;
+}
+
+.kanban-column:nth-child(2) {
+    border-top: 4px solid #10b981;
+}
+
+.kanban-column:nth-child(3) {
+    border-top: 4px solid #ef4444;
+}
+
+.titulo-seccion {
+
+    margin: 30px 0 15px 0;
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    color: #334155;
+}
+
+.sin-tareas {
+    text-align: center;
+    color: #94a3b8;
+    margin-top: 40px;
+    font-style: italic;
+}

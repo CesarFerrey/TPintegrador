@@ -127,7 +127,24 @@ export class TareasListado implements OnInit {
     return this.tareas().filter(
       tarea => tarea.estado === EstadosTareasEnum.PENDIENTE
     ).length;
-    
+  });
+  
+  readonly tareasKanbanPendientes = computed(() => {
+    return this.tareas().filter(
+      tarea => tarea.estado === EstadosTareasEnum.PENDIENTE
+    );
+  });
+  
+  readonly tareasKanbanFinalizadas = computed(() => {
+    return this.tareas().filter(
+      tarea => tarea.estado === EstadosTareasEnum.FINALIZADA
+    );
+  });
+  
+  readonly tareasKanbanBaja = computed(() => {
+    return this.tareas().filter(
+      tarea => tarea.estado === EstadosTareasEnum.BAJA
+    );
   });
 
   cambiarFiltro(event: Event): void {
