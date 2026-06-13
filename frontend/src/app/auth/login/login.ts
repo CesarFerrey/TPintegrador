@@ -2,23 +2,28 @@ import { Component, inject } from "@angular/core";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { LoginApiClient } from "./login-api-client";
 import { MessageService } from "primeng/api";
 import { AuthStore } from "../auth-store";
-import { Router, RouterModule } from "@angular/router";
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+
 
 @Component({
     selector: "app-login",
     templateUrl: "./login.html",
     styleUrl: "./login.css",
-    imports: [ButtonModule, InputTextModule, PasswordModule, ReactiveFormsModule, RouterModule]
+    imports: [ButtonModule, InputTextModule, PasswordModule, ReactiveFormsModule]
+
 })
 export class Login {
 
     private readonly loginApiClient: LoginApiClient = inject(LoginApiClient);
-    private readonly messageService: MessageService = inject(MessageService);
+
+    private readonly messageService: MessageService = inject(MessageService)
+
     private readonly authStore: AuthStore = inject(AuthStore);
+
     private readonly router: Router = inject(Router);
 
     readonly form: FormGroup = new FormGroup({
@@ -26,42 +31,28 @@ export class Login {
         clave: new FormControl("", [Validators.required])
     });
 
+
     iniciarSesion() {
         if (!this.form.valid){
-            this.messageService.add({
-                severity: "error", 
-                summary: "Error", 
-                detail: "Los campos del formulario son requeridos o inválidos"
-            });
+            this.messageService.add({severity: "error", summary: "Los campos del formulario son requeridos"});
             return;
-        }
 
-        this.messageService.add({ severity: "info", summary: "Procesando", detail: "Autenticando usuario..." });
+    }
 
-        const { nombre, clave } = this.form.value;
+        const nombre: string = this.form.value.nombre
+
+        const clave: string = this.form.value.clave
 
         this.loginApiClient.iniciarSesion(nombre, clave).subscribe({
-            next: (respuesta) => {
-                this.authStore.guardarToken(respuesta.accessToken);
-                sessionStorage.setItem('accessToken', respuesta.accessToken);
-
-                this.messageService.add({ severity: "success", summary: "¡Éxito!", detail: "Sesión iniciada correctamente" });
-                
+            next: (data)=>{
+                this.authStore.guardarToken(data.accessToken);
                 this.router.navigateByUrl("/proyectos");
             },
-            error: (err) => {
-                let detalleError = "Usuario o contraseña incorrectos";
-                
-                if (err.error && err.error.message) {
-                    detalleError = err.error.message;
-                }
-                
-                this.messageService.add({ 
-                    severity: "error", 
-                    summary: "Error de autenticación", 
-                    detail: detalleError 
-                });
+
+            error: (err)=>{
+                this.messageService.add({severity: "error", summary: "Ha ocurrido un error al iniciar sesión"})
             }
+
         });
-    } 
-}
+
+    }}

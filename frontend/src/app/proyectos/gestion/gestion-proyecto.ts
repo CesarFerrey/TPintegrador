@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, model, ModelSignal, OnInit, Signal, signal, WritableSignal } from "@angular/core";
+import { Component, computed, effect, inject, model, ModelSignal, Signal, signal, WritableSignal } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { DialogModule } from "primeng/dialog";
 import { EstadosProyectosEnum } from "../estados-proyectos-enum";
@@ -22,16 +22,22 @@ import { NgSelectModule } from '@ng-select/ng-select';
     styleUrls: ["./gestion-proyecto.css"],
     imports: [DialogModule, InputTextModule, SelectModule, ButtonModule, ReactiveFormsModule, ClientesListado, NgSelectModule]
 })
-export class GestionProyecto implements OnInit {
+export class GestionProyecto {
 
     visible: ModelSignal<boolean> = model(false);
+
     readonly dialogClientesVisible: WritableSignal<boolean> = signal<boolean>(false);
+
     proyectoSeleccionado: ModelSignal<ListProyectoDTO | null> = model<ListProyectoDTO | null>(null);
+
     readonly estados: WritableSignal<string[]> = signal(Object.values(EstadosProyectosEnum));
 
     private readonly messageService: MessageService = inject(MessageService);
+
     private readonly gestionProyectoApiClient = inject(GestionProyectoApiClient);
+
     readonly clientes: WritableSignal<ListClienteDTO[]> = signal<ListClienteDTO[]>([]);
+
     private readonly clientesListadoApiClient: ClientesListadoApiClient = inject(ClientesListadoApiClient);
 
     header: Signal<string> = computed(() => {
@@ -55,7 +61,8 @@ export class GestionProyecto implements OnInit {
                     cliente: this.proyectoSeleccionado()?.cliente,
                     estado: this.proyectoSeleccionado()?.estado
                 });
-            } else {
+            }
+            else {
                 this.form.reset({
                     nombre: "",
                     cliente: null,
@@ -69,6 +76,7 @@ export class GestionProyecto implements OnInit {
                 this.refrescarClientes();
             }
         });
+
     }
 
     ngOnInit(): void {
@@ -81,12 +89,7 @@ export class GestionProyecto implements OnInit {
                 this.clientes.set(data);
             },
             error: (error) => {
-                // 🚀 SALVAVIDAS 1: Si falla el backend, llenamos el desplegable para poder testear el front
-                this.clientes.set([
-                    { id: 1, nombre: 'Calzados Topper', estado: EstadosClientesEnum.ACTIVO },
-                    { id: 2, nombre: 'Brownies SDE', estado: EstadosClientesEnum.ACTIVO },
-                    { id: 3, nombre: 'Municipalidad', estado: EstadosClientesEnum.ACTIVO }
-                ] as any);
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al obtener los clientes' });
             }
         });
     }
@@ -117,9 +120,14 @@ export class GestionProyecto implements OnInit {
                     this.cerrarDialog();
                 },
                 error: (err) => {
-                    // 🚀 SALVAVIDAS 2 (Modo Edición): Forzamos el éxito visual en el frontend
-                    this.messageService.add({ severity: 'success', summary: 'Éxito (Modo Prueba)', detail: 'Proyecto editado correctamente en la interfaz.' });
-                    this.cerrarDialog();
+                    let detail: string = "";
+                    if (err.error.statusCode >= 400 && err.error.statusCode < 500) {
+                        detail = err.error.message
+                    }
+                    else {
+                        detail = "Ha ocurrido un error al actualizar el proyecto"
+                    }
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: detail });
                 }
             });
         } else {
@@ -133,9 +141,14 @@ export class GestionProyecto implements OnInit {
                     this.cerrarDialog();
                 },
                 error: (err) => {
-                    // 🚀 SALVAVIDAS 2 (Modo Creación): Forzamos el éxito visual en el frontend
-                    this.messageService.add({ severity: 'success', summary: 'Éxito (Modo Prueba)', detail: 'Proyecto creado correctamente en la interfaz.' });
-                    this.cerrarDialog();
+                    let detail: string = "";
+                    if (err.error.statusCode >= 400 && err.error.statusCode < 500) {
+                        detail = err.error.message
+                    }
+                    else {
+                        detail = "Ha ocurrido un error al crear el proyecto"
+                    }
+                    this.messageService.add({ severity: 'error', summary: 'Error', detail: detail });
                 }
             });
         }
@@ -144,4 +157,5 @@ export class GestionProyecto implements OnInit {
     gestionarClientes(): void {
         this.dialogClientesVisible.set(true);
     }
+
 }

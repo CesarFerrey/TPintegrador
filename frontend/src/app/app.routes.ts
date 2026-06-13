@@ -1,32 +1,45 @@
 import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
-import { Register } from './auth/register/register'; // 🔥 NUEVO: Importamos tu componente de registro
 import { TareasListado } from './proyectos/tareas/listado/tareas-listado';
 import { ProyectosListado } from './proyectos/listado/proyectos-listado';
-import { authGuard } from './auth/auth-guard';
+import { DashboardComponent } from './dashboard/dashboard';
+import { MainLayout } from './layout/main-layout/main-layout';
+
 
 export const routes: Routes = [
+
     {
-        path: "login",
-        component: Login
+      path: 'login',
+      component: Login
     },
+  
     {
-        // 🔥 NUEVO: Declaramos la ruta pública para el formulario de registro
-        path: "registrar",
-        component: Register
+      path: '',
+      component: MainLayout,
+  
+      children: [
+  
+        {
+          path: 'dashboard',
+          component: DashboardComponent
+        },
+  
+        {
+          path: 'proyectos',
+          component: ProyectosListado
+        },
+  
+        {
+          path: 'proyectos/:id/tareas',
+          component: TareasListado
+        }
+  
+      ]
     },
+  
     {
-        path: 'proyectos/:id/tareas',
-        component: TareasListado,
-        /*canActivate: [authGuard]*/
-    },
-    {
-        path: 'proyectos',
-        component: ProyectosListado,
-        canActivate: [authGuard]
-    },
-    {
-        path: "**",
-        redirectTo: "proyectos"
+      path: '**',
+      redirectTo: 'login'
     }
-];
+  
+  ];
