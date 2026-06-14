@@ -9,37 +9,42 @@ import { MainLayout } from './layout/main-layout/main-layout';
 export const routes: Routes = [
 
     {
+      path: '',
+      redirectTo: 'login',
+      pathMatch: 'full'
+    },
+    {
       path: 'login',
       component: Login
     },
-  
+
     {
       path: '',
       component: MainLayout,
-  
+
       children: [
-  
+
         {
           path: 'dashboard',
           component: DashboardComponent
         },
-  
+
         {
           path: 'proyectos',
           component: ProyectosListado
         },
-  
+
         {
           path: 'proyectos/:id/tareas',
           component: TareasListado
         }
-  
+
       ]
     },
-  
+
     {
       path: '**',
       redirectTo: 'login'
     }
-  
+
   ];

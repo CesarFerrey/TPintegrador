@@ -8,9 +8,9 @@ export class LoginApiClient{
 
     private readonly client: HttpClient = inject(HttpClient)
 
-    iniciarSesion(nombre: string, clave: string): Observable<{ accessToken: string }> {
+    iniciarSesion(email: string, password: string): Observable<{ accessToken: string }> {
 
-        return this.client.post<{ accessToken: string }>("/api/v1/auth", { nombre, clave });
+        return this.client.post<{ accessToken: string }>("http://localhost:3000/api/v1/auth/login", { email, password });
 
     }
 

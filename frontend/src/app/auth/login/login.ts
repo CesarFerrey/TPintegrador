@@ -27,8 +27,8 @@ export class Login {
     private readonly router: Router = inject(Router);
 
     readonly form: FormGroup = new FormGroup({
-        nombre: new FormControl("", [Validators.required]),
-        clave: new FormControl("", [Validators.required])
+        email: new FormControl("", [Validators.required, Validators.email]),
+        password: new FormControl("", [Validators.required])
     });
 
 
@@ -39,11 +39,11 @@ export class Login {
 
     }
 
-        const nombre: string = this.form.value.nombre
+        const email: string = this.form.value.email
 
-        const clave: string = this.form.value.clave
+        const password: string = this.form.value.password
 
-        this.loginApiClient.iniciarSesion(nombre, clave).subscribe({
+        this.loginApiClient.iniciarSesion(email, password).subscribe({
             next: (data)=>{
                 this.authStore.guardarToken(data.accessToken);
                 this.router.navigateByUrl("/proyectos");
