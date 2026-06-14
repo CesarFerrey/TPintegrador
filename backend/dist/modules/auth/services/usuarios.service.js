@@ -30,8 +30,17 @@ let UsuariosService = class UsuariosService {
         });
     }
     async crearUsuario(usuarioData) {
-        const nuevoUsuario = this.usuariosRespository.create(usuarioData);
-        return await this.usuariosRespository.save(nuevoUsuario);
+        try {
+            const nuevoUsuario = this.usuariosRespository.create({
+                ...usuarioData,
+                estado: estados_usuarios_enum_1.EstadosUsuariosEnum.ACTIVO,
+            });
+            return await this.usuariosRespository.save(nuevoUsuario);
+        }
+        catch (error) {
+            console.error('Error al guardar usuario en la BD:', error);
+            throw new common_1.InternalServerErrorException('No se pudo registrar el usuario');
+        }
     }
     async activarUsuario(id) {
         return await this.usuariosRespository.update(id, {

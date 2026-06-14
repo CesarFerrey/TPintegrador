@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from '../entitites/usuario.entity';
-import { Repository } from 'typeorm';
+import { Repository } from 'typeorm'; // <--- ESTA ES LA ÚNICA QUE NECESITAS
 import { EstadosUsuariosEnum } from '../enums/estados-usuarios.enum';
 
 @Injectable()
@@ -11,19 +11,26 @@ export class UsuariosService {
     private readonly usuariosRespository: Repository<Usuario>,
   ) {}
 
-  // Este método busca por EMAIL en la base de datos
   async buscarUsuarioActivoPorNombre(
     nombreORemail: string,
   ): Promise<Usuario | null> {
     return await this.usuariosRespository.findOneBy({
       estado: EstadosUsuariosEnum.ACTIVO,
-      email: nombreORemail, // Buscamos en la columna email
+      email: nombreORemail,
     });
   }
 
   async crearUsuario(usuarioData: Partial<Usuario>): Promise<Usuario> {
-    const nuevoUsuario = this.usuariosRespository.create(usuarioData);
-    return await this.usuariosRespository.save(nuevoUsuario);
+    try {
+      const nuevoUsuario = this.usuariosRespository.create({
+        ...usuarioData,
+        estado: EstadosUsuariosEnum.ACTIVO,
+      });
+      return await this.usuariosRespository.save(nuevoUsuario);
+    } catch (error) {
+      console.error('Error al guardar usuario en la BD:', error);
+      throw new InternalServerErrorException('No se pudo registrar el usuario');
+    }
   }
 
   async activarUsuario(id: number): Promise<any> {

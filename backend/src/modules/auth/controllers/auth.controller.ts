@@ -13,6 +13,9 @@ export class AuthController {
 
   @Post('registrar')
   async registrar(@Body() dto: any): Promise<any> {
+
+    console.log('DATOS REGISTRO:', dto);
+
     return await this.authService.registrar(dto);
   }
 }

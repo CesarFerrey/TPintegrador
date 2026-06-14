@@ -25,6 +25,7 @@ let AuthController = class AuthController {
         return await this.authService.login(dto);
     }
     async registrar(dto) {
+        console.log('DATOS REGISTRO:', dto);
         return await this.authService.registrar(dto);
     }
 };
